@@ -5,11 +5,11 @@
 var AWS = require('aws-sdk');
 var pg = require('pg');
 var secrets = require('./secrets');
-var credentials = 'aws_access_key_id=' + process.env.AWS_ACCESS_KEY_ID +
-                  ';aws_secret_access_key=' + process.env.AWS_SECRET_ACCESS_KEY;
+var credentials = 'aws_access_key_id=' + secrets.AWS_ACCESS_KEY_ID +
+                  ';aws_secret_access_key=' + secrets.AWS_SECRET_ACCESS_KEY;
 
 var pre = "COPY " + secrets.REDSHIFT_TABLE + " FROM ";
-var post = " credentials '" + credentials + "' json 'auto' gzip ACCEPTINVCHARS ' ' TRUNCATECOLUMNS TRIMBLANKS TIMEFORMAT 'epochmillisecs';";
+var post = " CREDENTIALS '" + credentials + "' json 'auto' gzip ACCEPTINVCHARS ' ' TRUNCATECOLUMNS TRIMBLANKS TIMEFORMAT 'epochmillisecs';";
 
 exports.handler = function(event, context) {
   var bucket = event.Records[0].s3.bucket.name;
